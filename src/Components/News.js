@@ -280,17 +280,14 @@ export class News extends Component {
       <div className="container my-3">
         <h2>NewsMonkey - Top Headlines</h2>
         <div className="row">
-          <div className="col-md-4">
-            <NewsItem title="myTitle" description="myDescription" imageUrl="https://media.wired.com/photos/61086c497b8c62be3062fe82/191:100/w_1280,c_limit/WI090121_MG_Ford_01.jpg" newsUrl="TODO" />
-          </div>
-          <div className="col-md-4">
-            <NewsItem title="myTitle" description="myDescription" />
-          </div>
-          <div className="col-md-4">
-            <NewsItem title="myTitle" description="myDescription" />
-          </div>
+          {this.state.articles.map((element) => {
+            return (
+            <div className="col-md-4" key={element.url}>
+              <NewsItem title={element.title.slice(0,45)} description={element.description.slice(0,88)} imageUrl={element.urlToImage} newsUrl={element.url} />
+            </div>
+          );
+          })}
         </div>
-        
       </div>
     );
   }
