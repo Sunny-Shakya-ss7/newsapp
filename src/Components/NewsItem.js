@@ -6,7 +6,15 @@ export class NewsItem extends Component {
     return (
       <div className="my-3">
         <div className="card" style={{ width: "18rem" }}>
-          <img src={imageUrl} className="card-img-top" alt="..." />
+          <img
+            src={
+              imageUrl
+                ? imageUrl
+                : "https://cdn.iconscout.com/icon/premium/png-512-thumb/no-image-1753539-1493784.png"
+            }
+            className="card-img-top"
+            alt="..."
+          />
           <div className="card-body">
             <h5 className="card-title">{title}...</h5>
             <p className="card-text">{description}...</p>
@@ -14,6 +22,7 @@ export class NewsItem extends Component {
               href={newsUrl}
               target="_blank"
               className="btn btn-sm btn-primary"
+              rel="noreferrer"
             >
               Read More
             </a>
