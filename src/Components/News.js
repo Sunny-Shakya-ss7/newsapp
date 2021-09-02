@@ -5,18 +5,6 @@ import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 export class News extends Component {
-  static defaultProps = {
-    country: "in",
-    pageSize: 6,
-    category: "General",
-  };
-
-  static propTypes = {
-    country: PropTypes.string,
-    pageSize: PropTypes.number,
-    category: PropTypes.string,
-  };
-
   capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
@@ -35,16 +23,20 @@ export class News extends Component {
   }
 
   async updateNews() {
+    this.props.setProgress(10);
     const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=6275d75921054755981fc88b7df6eba2&page=${this.props.page}&pagesize=${this.props.pageSize}`;
     this.setState({ loading: true });
     let data = await fetch(url);
+    this.props.setProgress(30);
     let parsedData = await data.json();
+    this.props.setProgress(70);
 
     this.setState({
       articles: parsedData.articles,
       totalResults: parsedData.totalResults,
       loading: false,
     });
+    this.props.setProgress(100);
   }
 
   async componentDidMount() {
@@ -80,10 +72,14 @@ export class News extends Component {
     return (
       <>
         <h1 className="text-center" style={{ margin: "35px 0px" }}>
-          NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)}
+          NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)}{" "}
           Headlines
         </h1>
-
+        {this.state.loading && (
+          <div className="text-center">
+            <Spinner />
+          </div>
+        )}
         <InfiniteScroll
           dataLength={this.state.articles.length}
           next={this.fetchMoreData}
@@ -121,6 +117,18 @@ export class News extends Component {
       </>
     );
   }
+
+  static defaultProps = {
+    country: "in",
+    pageSize: 6,
+    category: "General",
+  };
+
+  static propTypes = {
+    country: PropTypes.string,
+    pageSize: PropTypes.number,
+    category: PropTypes.string,
+  };
 }
 
 export default News;
